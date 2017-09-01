@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        				http://www.springframework.org/schema/context   
+        				http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+        				http://www.springframework.org/schema/aop   
+                        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<!-- 配置文件 -->
+	<context:property-placeholder location="classpath:written.properties,classpath:emailConfig.properties,classpath:redis.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>
+	<!-- 排除加载@Controller -->
+	<context:component-scan base-package="com.dayee.writtenExam.*">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+	<!-- 注册一个JDBC数据源事务管理器 -->
+	<bean id="ideaJdbcTxAspect" class="com.ideamoment.ideajdbc.spring.IdeaJdbcTransactionAspect" />
+
+	<bean id="SpringContextUtil" class="com.dayee.writtenExam.framework.util.SpringContextUtils" scope="singleton"></bean>
+
+	<import resource="springmvc-shiro.xml"/>
+	<import resource="spring-mongo.xml"></import>
+
+	<!--<import resource="spring-rpc.xml"></import>-->
+	<import resource="spring-dubbo.xml"></import>
+	<!--<import resource="spring-dubbox-cunsumer.xml"></import>-->
+	<!--模板文件处理-->
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+
+	<!--邮件服务配置-->
+	<bean id="mailConfig" class="com.dayee.writtenExam.model.config.MailConfig">
+		<property name="mailAddress" value="${email.address}"/>
+		<property name="showSendName" value="${email.fromName}"/>
+		<property name="mailUserName" value="${email.userName}"/>
+		<property name="mailPassword" value="${email.password}"/>
+		<property name="smtpServer" value="${email.smtpServer}"/>
+		<property name="smtpPort" value="${email.smtpPort}"/>
+		<property name="tryTime" value="${email.try.sendtime}"/>
+	</bean>
+
+	<!--redis 配置-->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig"></bean>
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="poolConfig" ref="poolConfig"/>
+		<constructor-arg name="host" value="${writtenExam.redis.cache.serverIp}"></constructor-arg>
+		<constructor-arg name="port" value="${writtenExam.redis.cache.port}"></constructor-arg>
+		<constructor-arg name="timeout" value="${writtenExam.redis.cache.timeOut}"></constructor-arg>
+		<constructor-arg name="password" value="${writtenExam.redis.cache.password}"></constructor-arg>
+	</bean>
+
+</beans>

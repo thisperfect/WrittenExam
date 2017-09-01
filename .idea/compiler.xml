@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="writtenExam-console" />
+        <module name="writtenExam-core" />
+        <module name="writtenExam-interface" />
+        <module name="writtenExam-pc" />
+        <module name="writtenExam-quesRep" />
+        <module name="writtenExam-scorePaper" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="writtenExam-console" target="1.7" />
+      <module name="writtenExam-core" target="1.7" />
+      <module name="writtenExam-interface" target="1.7" />
+      <module name="writtenExam-parent" target="1.7" />
+      <module name="writtenExam-pc" target="1.7" />
+      <module name="writtenExam-quesRep" target="1.7" />
+      <module name="writtenExam-scorePaper" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="writtenExam-console:war">
+    <output-path>$PROJECT_DIR$/writtenExam-console/target</output-path>
+    <root id="archive" name="writtenExam-console.war">
+      <element id="artifact" artifact-name="writtenExam-console:war exploded" />
+    </root>
+  </artifact>
+</component>

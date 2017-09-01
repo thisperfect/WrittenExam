@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  ">
+
+<!--    <bean id="quesRepService" class="com.dayee.writtenExam.quesRep.service.QuesRepInterfaceImpl"/>
+
+    &lt;!&ndash; rmi server&ndash;&gt;
+    <bean id="quesRepRMI" class="org.springframework.remoting.rmi.RmiServiceExporter">
+    &lt;!&ndash; 服务名称,指暴露出去的服务的名称 &ndash;&gt;
+        <property name="serviceName">
+            <value>quesRep</value>
+        </property>
+        &lt;!&ndash; 实现类的bean ref名称&ndash;&gt;
+        <property name="service" ref="quesRepService" />
+        &lt;!&ndash; 接口类的class地址 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.dayee.writtenExam.rpcInterface.QuesRepInterface</value>
+        </property>
+        &lt;!&ndash; 暴露服务出去的端口号 &ndash;&gt;
+        <property name="registryPort">
+                <value>9500</value>
+        </property>
+        &lt;!&ndash; 数据传输端口 如果不配置会自动随机分配&ndash;&gt;
+        <property name="servicePort">
+            <value>9501</value>
+        </property>
+    </bean>-->
+
+    <!--rmi client-->
+    <!-- 客户端的bean-->
+    <!--<bean id="bridgeClient" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">-->
+        <!-- 服务的url的地址, ip+注册端口+注册服务名称 -->
+        <!--<property name="serviceUrl">-->
+            <!--<value>rmi://127.0.0.1:9400/bridgeArchiveSync</value>-->
+        <!--</property>-->
+        <!-- 服务接口类 -->
+        <!--<property name="serviceInterface">-->
+            <!--<value>com.dayee.resumeCloud.rpcInterface.ResumeRpcInterface</value>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; setting refresh connect &ndash;&gt;-->
+        <!--<property name="refreshStubOnConnectFailure" value="true"></property>-->
+        <!--<property name="lookupStubOnStartup" value="false"></property>-->
+    <!--</bean>-->
+    <!--<bean id="houseClient" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">-->
+        <!--<property name="serviceUrl">-->
+            <!--<value>rmi://127.0.0.1:9400/houseArchiveSync</value>-->
+        <!--</property>-->
+        <!--<property name="serviceInterface">-->
+            <!--<value>com.dayee.yuncai.social.archive.api.client.IArchiveSync3rdClient</value>-->
+        <!--</property>-->
+        <!--&lt;!&ndash; setting refresh connect &ndash;&gt;-->
+        <!--<property name="refreshStubOnConnectFailure" value="true"></property>-->
+        <!--<property name="lookupStubOnStartup" value="false"></property>-->
+    <!--</bean>-->
+</beans>

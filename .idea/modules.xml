@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-console/writtenExam-console.iml" filepath="$PROJECT_DIR$/writtenExam-console/writtenExam-console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-core/writtenExam-core.iml" filepath="$PROJECT_DIR$/writtenExam-core/writtenExam-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-interface/writtenExam-interface.iml" filepath="$PROJECT_DIR$/writtenExam-interface/writtenExam-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-parent.iml" filepath="$PROJECT_DIR$/writtenExam-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-pc/writtenExam-pc.iml" filepath="$PROJECT_DIR$/writtenExam-pc/writtenExam-pc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-quesRep/writtenExam-quesRep.iml" filepath="$PROJECT_DIR$/writtenExam-quesRep/writtenExam-quesRep.iml" />
+      <module fileurl="file://$PROJECT_DIR$/writtenExam-scorePaper/writtenExam-scorePaper.iml" filepath="$PROJECT_DIR$/writtenExam-scorePaper/writtenExam-scorePaper.iml" />
+    </modules>
+  </component>
+</project>

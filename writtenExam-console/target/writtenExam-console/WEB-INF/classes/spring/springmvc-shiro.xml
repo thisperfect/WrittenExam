@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                        http://www.springframework.org/schema/context   
+        				http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    
+    <context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true" ignore-resource-not-found="true"/>                    
+    <!--<bean id="yuncaiLoginFilter" class="com.dayee.writtenExam.login.YuncaiFormAuthenticationFilter">
+        <property name="allowOrigin" value="*"></property>
+        <property name="allowMethods" value="GET,POST,PUT,DELETE,OPTIONS"></property>
+        <property name="allowCredentials" value="true"></property>
+        <property name="allowHeaders" value="Content-Type"></property>
+        <property name="exposeHeaders" value=""></property> 
+    </bean>-->
+    <!--<bean id="roleOrFilter" class="com.dayee.writtenExam.filter.RolesOrAuthorizationFilter"/>-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+        <property name="securityManager" ref="securityManager"/>  
+        <!-- 登陆页面的连接 -->  
+        <property name="loginUrl" value="/writtenExam/index.jsp"/>
+        <!-- 身份验证后跳转的连接 -->  
+        <property name="successUrl" value="/writtenExam/test/index.jsp"/>
+        <property name="unauthorizedUrl" value="/writtenExam/index.jsp"/>
+        <!--<property name="filters">
+		    <map>
+		        <entry key="authc" value-ref="yuncaiLoginFilter"/>
+                <entry key="roles" value-ref="roleOrFilter"/>
+            </map>
+		</property>-->
+        <property name="filterChainDefinitions">  
+            <!-- 详细描述 见文档-->
+            <value>
+                /test/**=anon
+                /image/**=anon
+                /detail/**=anon
+                /resume/resumeDetail/email=anon
+            	/js/**=anon
+            	/styles/**=anon
+                /login=anon
+                /index.jsp=anon
+                /console=anon
+                /swithCorp.jsp=anon
+                /**=authc
+            </value>  
+        </property>  
+    </bean>
+    
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+        <!--  <property name="authenticator" ref="modularAuthricator"/>-->
+        <!--<property name="realm" ref="yuncaiRealm"/>-->
+        <!-- sessionManager -->
+	    <property name="sessionManager" ref="sessionManager" />
+	    <!-- cacheManager -->
+	    <property name="cacheManager" ref="cacheManager" />
+    </bean>  
+    <!-- 
+    <bean marriageId="modularAuthricator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <property name="authenticationStrategy" ref="firstSuccess"/>
+        <property name="realms">
+           <list>
+             <ref bean="yuncaiRealm"/>
+           </list>
+        </property>
+    </bean>
+     -->
+    <bean id="firstSuccess" class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"/>
+      
+     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    
+    
+    <!-- shiro redisManager -->
+	<bean id="redisManager" class="com.dayee.writtenExam.login.shirocache.redis.RedisManager">
+ 	    <property name="host" value="${writtenExam.redis.cache.serverIp}"/>
+	    <property name="port" value="${writtenExam.redis.cache.port}"/>
+	    <property name="password" value="${writtenExam.redis.cache.password}"/>
+	    <!-- 设置七天过期 -->
+	    <property name="expire" value="${writtenExam.redis.login.exprTime}"/>
+	    <!-- <property name="expire" value="1800"/> -->
+	</bean>
+	
+	<!-- redisSessionDAO -->
+	<bean id="redisSessionDAO" class="com.dayee.writtenExam.login.shirocache.redis.RedisSessionDAO">
+	    <property name="redisManager" ref="redisManager" />
+	</bean>
+	
+	<!-- sessionManager -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- session存储的实现 -->  
+	    <property name="sessionDAO" ref="redisSessionDAO" />
+        <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->  
+        <property name="sessionIdCookie" ref="sharesession" />
+	    
+	    <!-- 设置全局会话超时时间，默认30分钟(1800000) -->  
+        <!-- <property name="globalSessionTimeout" value="1800000" /> -->
+        <property name="globalSessionTimeout" value="1800000" />
+        <!-- 是否在会话过期后会调用SessionDAO的delete方法删除会话 默认true -->  
+        <!-- <property name="deleteInvalidSessions" value="true" />   -->
+        <!-- 会话验证器调度时间 -->  
+        <property name="sessionValidationInterval" value="1800000" />
+        <!-- 定时检查失效的session -->  
+         <property name="sessionValidationSchedulerEnabled" value="true" />
+       <!-- <property name ="sessionListeners" ref="shiroSessionListener"/>-->
+
+	</bean>
+   <!-- <bean id="shiroSessionListener" class="com.dayee.writtenExam.listener.SessionListener1"></bean>-->
+
+    <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->  
+    <bean id="sharesession" class="org.apache.shiro.web.servlet.SimpleCookie">  
+        <!-- cookie的name,对应的默认是 JSESSIONID -->  
+        <constructor-arg name="name" value="RESUMEJSESSIONID" />  
+        <!-- jsessionId的path为 / 用于多个系统共享jsessionId -->  
+        <property name="path" value="/" />  
+        <property name="httpOnly" value="true"/>  
+    </bean>
+	
+	<!-- cacheManager -->
+	<bean id="cacheManager" class="com.dayee.writtenExam.login.shirocache.redis.RedisCacheManager">
+	    <property name="redisManager" ref="redisManager" />
+	</bean>
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"  
+        depends-on="lifecycleBeanPostProcessor" /> 
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
+        <property name="securityManager" ref="securityManager" />  
+    </bean>  
+    
+</beans>
